@@ -1,5 +1,6 @@
 const databaseUrl = 'https://home-d1c03-default-rtdb.europe-west1.firebasedatabase.app/users.json'; // Modifica con l'URL del tuo Firebase Realtime Database
 
+
 // Funzione per registrare un nuovo utente
 document.getElementById('register-form').addEventListener('submit', async function (event) {
   event.preventDefault();
@@ -52,6 +53,9 @@ document.getElementById('login-form').addEventListener('submit', async function 
   if (userFound) {
     messageElement.textContent = 'Login riuscito!';
     messageElement.style.color = 'green';
+
+    // Reindirizzamento alla nuova pagina
+    window.location.href = "dashboard.html";  // Aggiungi l'URL del file HTML della pagina di destinazione
   } else {
     messageElement.textContent = 'Credenziali errate. Riprova.';
     messageElement.style.color = 'red';
