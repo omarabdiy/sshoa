@@ -3,141 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrazione e Login</title>
+  <title>Home</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       margin: 0;
       padding: 0;
-    }
-    .container {
-      width: 100%;
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
       text-align: center;
     }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+    .container {
+      margin-top: 100px;
     }
     button {
-      width: 100%;
-      padding: 10px;
+      padding: 15px 30px;
+      margin: 10px;
       background-color: #28a745;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 16px;
     }
     button:hover {
       background-color: #218838;
-    }
-    .error {
-      color: red;
-      text-align: center;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h2>Registrazione</h2>
-    <form id="register-form">
-      <input type="text" id="register-username" placeholder="Username" required>
-      <input type="password" id="register-password" placeholder="Password" required>
-      <button type="submit">Registrati</button>
-    </form>
-    <p id="register-error" class="error"></p>
+    <h1>Benvenuto!</h1>
+    <p>Scegli una delle opzioni per continuare:</p>
+    <button onclick="window.location.href='login.html'">Accedi</button>
+    <button onclick="window.location.href='register.html'">Registrati</button>
   </div>
-
-  <div class="container" style="display:none;" id="login-container">
-    <h2>Accedi</h2>
-    <form id="login-form">
-      <input type="text" id="login-username" placeholder="Username" required>
-      <input type="password" id="login-password" placeholder="Password" required>
-      <button type="submit">Accedi</button>
-    </form>
-    <p id="login-error" class="error"></p>
-  </div>
-
-  <script>
-    const databaseUrl = "https://tpsit-progetto-default-rtdb.europe-west1.firebasedatabase.app/";
-
-    // Funzione di registrazione
-    document.getElementById("register-form").addEventListener("submit", async function(event) {
-      event.preventDefault();
-      const username = document.getElementById("register-username").value;
-      const password = document.getElementById("register-password").value;
-
-      const userExists = await checkUserExists(username);
-
-      if (userExists) {
-        document.getElementById("register-error").textContent = "Username già esistente!";
-      } else {
-        // Salva i dati nel database Firebase
-        await saveUserData(username, password);
-        alert("Registrazione completata con successo!");
-        document.getElementById("register-error").textContent = "";
-        document.getElementById("login-container").style.display = "block";
-        document.querySelector(".container").style.display = "none";
-      }
-    });
-
-    // Funzione di login
-    document.getElementById("login-form").addEventListener("submit", async function(event) {
-      event.preventDefault();
-      const username = document.getElementById("login-username").value;
-      const password = document.getElementById("login-password").value;
-
-      const user = await getUserData(username);
-
-      if (user && user.password === password) {
-        window.location.href = "welcome.html";  // Reindirizza alla pagina di benvenuto
-      } else {
-        document.getElementById("login-error").textContent = "Credenziali errate!";
-      }
-    });
-
-    // Funzione per verificare se l'utente esiste nel database
-    async function checkUserExists(username) {
-      const response = await fetch(`${databaseUrl}/users.json`);
-      const data = await response.json();
-      return data && Object.keys(data).some(key => data[key].username === username);
-    }
-
-    // Funzione per salvare i dati utente nel database
-    async function saveUserData(username, password) {
-      const newUser = {
-        username: username,
-        password: password
-      };
-      const response = await fetch(`${databaseUrl}/users.json`, {
-        method: 'POST',
-        body: JSON.stringify(newUser)
-      });
-      return response.json();
-    }
-
-    // Funzione per ottenere i dati utente dal database
-    async function getUserData(username) {
-      const response = await fetch(`${databaseUrl}/users.json`);
-      const data = await response.json();
-      if (data) {
-        return Object.values(data).find(user => user.username === username);
-      }
-      return null;
-    }
-  </script>
 
 </body>
 </html>
