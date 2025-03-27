@@ -1,4 +1,4 @@
-const databaseUrl = 'https://home-d1c03-default-rtdb.europe-west1.firebasedatabase.app//users.json'; // Modifica con l'URL del tuo Firebase Realtime Database
+const databaseUrl = 'https://home-d1c03-default-rtdb.europe-west1.firebasedatabase.app/users.json'; // Modifica con l'URL del tuo Firebase Realtime Database
 
 // Funzione per registrare un nuovo utente
 document.getElementById('register-form').addEventListener('submit', async function (event) {
@@ -6,9 +6,10 @@ document.getElementById('register-form').addEventListener('submit', async functi
   
   const nome = document.getElementById('reg-nome').value;
   const cognome = document.getElementById('reg-cognome').value;
+  const username = document.getElementById('reg-username').value;
   const password = document.getElementById('reg-password').value;
 
-  const user = { nome, cognome, password };
+  const user = { nome, cognome, username, password };
 
   const response = await fetch(databaseUrl, {
     method: 'POST',
@@ -31,8 +32,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
 document.getElementById('login-form').addEventListener('submit', async function (event) {
   event.preventDefault();
   
-  const nome = document.getElementById('login-nome').value;
-  const cognome = document.getElementById('login-cognome').value;
+  const username = document.getElementById('login-username').value;
   const password = document.getElementById('login-password').value;
 
   const response = await fetch(databaseUrl);
@@ -41,7 +41,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
   let userFound = false;
 
   for (const key in data) {
-    if (data[key].nome === nome && data[key].cognome === cognome && data[key].password === password) {
+    if (data[key].username === username && data[key].password === password) {
       userFound = true;
       break;
     }
