@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrazione</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Registrazione</h2>
+    <form id="register-form">
+      <input type="text" id="register-username" placeholder="Username" required>
+      <input type="password" id="register-password" placeholder="Password" required>
+      <input type="text" id="register-first-name" placeholder="Nome" required>
+      <input type="text" id="register-last-name" placeholder="Cognome" required>
+      <button type="submit">Registrati</button>
+    </form>
+    <p id="register-error" class="error"></p>
+  </div>
+
+  <script>
+    const databaseUrl = "https://tpsit-progetto-default-rtdb.europe-west1.firebasedatabase.app/";
+
+    // Funzione di registrazione
+    document.getElementById("register-form").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const username = document.getElementById("register-username").value;
+      const password = document.getElementById("register-password").value;
+      const firstName = document.getElementById("register-first-name").value;
+      const lastName = document.getElementById("register-last-name").value;
+
+      const userExists = await checkUserExists(username);
+
+      if (userExists) {
+        document.getElementById("register-error").textContent = "Username già esistente!";
+      } else {
+        // Salva i dati nel database Firebase
+        await saveUserData(username, password, firstName, lastName);
+        alert("Registrazione completata con successo!");
+        window.location.href = "login.html";  // Reindirizza alla pagina di login
+      }
+    });
+
+    // Funzione per verificare se l'utente esiste nel database
+    async function checkUserExists(username) {
+      const response = await fetch(`${databaseUrl}/users.json`);
+      const data = await response.json();
+      return data && Object.keys(data).some(key => data[key].username === username);
+    }
+
+    // Funzione per salvare i dati utente nel database
+    async function saveUserData(username, password, firstName, lastName) {
+      const newUser = {
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName
+      };
+      const response = await fetch(`${databaseUrl}/users.json`, {
+        method: 'POST',
+        body: JSON.stringify(newUser)
+      });
+      return response.json();
+    }
+  </script>
+
+</body>
+</html>
