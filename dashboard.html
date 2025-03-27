@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Benvenuto nella Dashboard!</h1>
+    <p>Sei connesso come: <span id="username"></span></p>
+    <button onclick="logout()">Esci</button>
+  </div>
+
+  <script>
+    // Funzione per gestire il logout
+    function logout() {
+      // Aggiungi la logica per il logout (se necessario)
+      // Per esempio, potresti voler eliminare i dati di sessione
+      window.location.href = "index.html"; // Reindirizza alla pagina di login
+    }
+
+    // Mostra lo username dell'utente
+    const username = localStorage.getItem('username'); // Salva lo username nel localStorage
+    document.getElementById('username').textContent = username;
+  </script>
+</body>
+</html>
